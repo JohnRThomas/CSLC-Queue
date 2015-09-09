@@ -1,0 +1,8 @@
+textarea:focus::-webkit-input-placeholder 
+{
+    color: transparent;
+}
+
+textarea:focus::-moz-placeholder{
+    color: transparent;
+}

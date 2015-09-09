@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>CSLC Queue</title>
+  <title>CSLC Question Queue</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </head>
-
 
 <script>
 
@@ -189,13 +189,12 @@
 									<option value='C'>CS1141 - C For Java Programmers</option>
 									<option value='Discrete'>CS2311 - Discrete Structures</option>
 									<option value='Data Structures'>CS2321 - Data Structures</option>
-									<option value='Systems'>CS3411 - Systems Programming</option>
 									<option value='OTHER'>Other</option>
 								<select>
 							</div>
 							<div class='form-group'>
 								<label for='question'>Question</label>
-								<textarea class='form-control' name='question'>Please say a few words about your question</textarea>
+								<textarea class='form-control' name='question' placeholder='Please write a detailed question.'></textarea>
 							</div>
 							<input type='submit' class='btn btn-success form-control' value='Ask Question!'>
 						</form>
