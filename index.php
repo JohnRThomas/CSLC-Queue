@@ -4,9 +4,11 @@
   <title>CSLC Question Queue</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </head>
 
@@ -21,15 +23,41 @@
 			$("#questionError").show(500);
 			return false;
 		}
-
 		return true;
 	}
 </script>
 
+<body>
+<div id='pop' hidden=true></div>
+
 <div class="container">
 			<?php
 				include_once "util.php";
-				
+				if(post('question')){
+				?>
+				<script>
+					function popUp(){
+						<?php echo "var question = ' ". post('question') . "'.trim().replace(' ','+');";?>
+						$('#pop').html("<div style='font-weight: bold'>While you wait, check out these seraches for your question:</div>&nbsp;<a style='color:#696DF7' target='_blank' href='http://google.com/search?q="+ question + "'>Google</a><br>&nbsp;<a style='color:#696DF7' target='_blank' href='http://stackoverflow.com/search?q="+ question + "'>Stack Overflow</a>");
+						$('#pop').dialog({
+							autoOpen: false,
+							width: 'auto',
+  							buttons: [
+    						{
+      							text: "OK",
+      							click: function() {$( this ).dialog( "close" );}
+							}
+						  	]
+						});
+						$(".ui-dialog-titlebar").hide();
+						$(".ui-dialog-buttonset").find("button").addClass("btn btn-success")
+						$('#pop').dialog('open');
+						$(".ui-dialog-buttonset").find("button").focus();
+					}
+					$(document).ready(function(){popUp();});
+				</script>
+				<?php
+				}
 				/***************************************
 				* Set Optional Info                    *
 				***************************************/
@@ -121,18 +149,17 @@
 
 				}
 
-                $ip = "";   //Unless changed below (must be admin)
+
 				if ($admin) {
                     //Get the IP
-                    $file = fopen("http://127.0.0.1/myip.php",'r');
-                    $ip = "<br>http://" . fgets($file) . "<br><small>(open url in your browser)</small>";
+                    $url = "<br>$_SERVER[HTTP_HOST]<br><small>(open url in your browser)</small>";
 
 					$number = "You are ADMIN <a href='?ilove=llamas' class='btn btn-primary'>Logout <span class='glyphicon glyphicon-log-out'></span></a>
-                                <a href='instructions.php' class='btn btn-warning' target='_blank'>Instructions</a>";
-				}
+                                <a href='instructions.php' class='btn btn-warning' target='_blank'>Instructions</a><div onClick='pop()' class='btn btn-warning' target='_blank'>Test</div>";
+				}else $url = "";
 				
 				echo "<div class='col-xs-12' style='background-color: #444; color:#fff'><h1>CSLC Question Queue
-                        $ip
+                        $url
 						<br><small>$number</small></h1></div><br>";
 
 
@@ -186,6 +213,7 @@
 									<option value='CNSA'>CS1111 - C for CNSA</option>
 									<option value='Intro I'>CS1121 - Intro To Prog. I</option>
 									<option value='Intro II'>CS1122 - Intro To Prog. II</option>
+									<option value='Accel Intro'>CS1131 - Accelerated Intro to Prog.</option>
 									<option value='C'>CS1141 - C For Java Programmers</option>
 									<option value='Discrete'>CS2311 - Discrete Structures</option>
 									<option value='Data Structures'>CS2321 - Data Structures</option>
@@ -194,7 +222,7 @@
 							</div>
 							<div class='form-group'>
 								<label for='question'>Question</label>
-								<textarea class='form-control' name='question' placeholder='Please write a detailed question.'></textarea>
+								<textarea id='question-text' class='form-control' name='question' placeholder='Please write a detailed question.'></textarea>
 							</div>
 							<input type='submit' class='btn btn-success form-control' value='Ask Question!'>
 						</form>
@@ -213,14 +241,13 @@
 					//Auto update stuffs here
 					include "livetable.php";
 				echo "</div>";
-
+				
 			?>
 	</div>
 	<div class='col-xs-12'>
 		Question Queue by <a href='http://www.tech.mtu.edu/~mitcheld'>Mitch Davis</a>
 	</div>
 </div>
-
 
 <?php
 	//Update the page every 5 seconds for 3.5 hours
@@ -235,7 +262,6 @@
 		}
 
 		echo "
-		<script src='jquery.js'></script>
 		<script>
 			setInterval(function() { $('#livetable').load('livetable.php'); }, 1000 );
 			$updatePics
@@ -245,3 +271,4 @@
 		echo "Auto Refresh turned off.  Click <a href='/'>HERE</a> to turn back on.";
 	}
 ?>
+</body>
