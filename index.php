@@ -155,7 +155,7 @@
                     $url = "<br>$_SERVER[HTTP_HOST]<br><small>(open url in your browser)</small>";
 
 					$number = "You are ADMIN <a href='?ilove=llamas' class='btn btn-primary'>Logout <span class='glyphicon glyphicon-log-out'></span></a>
-                                <a href='instructions.php' class='btn btn-warning' target='_blank'>Instructions</a><div onClick='pop()' class='btn btn-warning' target='_blank'>Test</div>";
+                                <a href='instructions.php' class='btn btn-warning' target='_blank'>Instructions</a>";
 				}else $url = "";
 				
 				echo "<div class='col-xs-12' style='background-color: #444; color:#fff'><h1>CSLC Question Queue
