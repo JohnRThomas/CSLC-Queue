@@ -245,7 +245,7 @@
 			?>
 	</div>
 	<div class='col-xs-12'>
-		Question Queue by <a href='http://www.tech.mtu.edu/~mitcheld'>Mitch Davis</a>
+		Question Queue by <a href='http://www.tech.mtu.edu/~mitcheld'>Mitch Davis</a> and <a href='https://github.com/JohnRThomas/'>John Thomas</a>
 	</div>
 </div>
 
