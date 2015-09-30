@@ -6,3 +6,14 @@ textarea:focus::-webkit-input-placeholder
 textarea:focus::-moz-placeholder{
     color: transparent;
 }
+
+.bg-info{
+	padding: 5px;
+	margin-top:5px;
+	margin-bottom:5px;
+	border-radius: 5px;
+}
+
+h3{
+	margin: 0px;
+}

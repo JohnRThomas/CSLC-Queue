@@ -73,7 +73,8 @@
 					uid INT(11),
 					answered INT(11),
 					ip TEXT,
-					token INT(11)
+					token INT(11),
+					seen TINY_INT(1)
 				);";
 		echo "<div class='bg-info text-info'>Executing query: $query</div>";
 		$conn->query($query);
@@ -101,8 +102,6 @@
 		echo "<div class='text-warning bg-warning'>Error connecting to database.  If database has not been created, try setting INITIALIZE_DB to TRUE in util.php</div>";
 		//exit();
 	}
-
-
 
 	function getName($uid) {
 		global $conn;

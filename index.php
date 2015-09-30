@@ -4,12 +4,12 @@
   <title>CSLC Question Queue</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <script>
@@ -38,7 +38,7 @@
 				<script>
 					function popUp(){
 						<?php echo "var question = ' ". post('question') . "'.trim().replace(' ','+');";?>
-						$('#pop').html("<div style='font-weight: bold'>While you wait, check out these seraches for your question:</div>&nbsp;<a style='color:#696DF7' target='_blank' href='http://google.com/search?q="+ question + "'>Google</a><br>&nbsp;<a style='color:#696DF7' target='_blank' href='http://stackoverflow.com/search?q="+ question + "'>Stack Overflow</a>");
+						$('#pop').html("<div style='font-weight: bold'>While you wait, check out these seraches for your question:</div><div>If your Google/Stack Overflow search is not up when we come to answer your question, we will wait for you to search for it and read it in front of us.</div><br>&nbsp;<a style='color:#696DF7' target='_blank' href='http://google.com/search?q="+ question + "'>Google</a><br>&nbsp;<a style='color:#696DF7' target='_blank' href='http://stackoverflow.com/search?q="+ question + "'>Stack Overflow</a>");
 						$('#pop').dialog({
 							autoOpen: false,
 							width: 'auto',
@@ -54,6 +54,12 @@
 						$('#pop').dialog('open');
 						$(".ui-dialog-buttonset").find("button").focus();
 					}
+					
+					/*function playSound() {
+						var sound = document.getElementById("dingding");
+						sound.Play();
+					}*/
+					
 					$(document).ready(function(){popUp();});
 				</script>
 				<?php
@@ -158,7 +164,7 @@
                                 <a href='instructions.php' class='btn btn-warning' target='_blank'>Instructions</a>";
 				}else $url = "";
 				
-				echo "<div class='col-xs-12' style='background-color: #444; color:#fff'><h1>CSLC Question Queue
+				echo "<div class='col-xs-12' style='background-color: #444; color:#fff; border-radius: 0px 0px 5px 5px'><h1>CSLC Question Queue
                         $url
 						<br><small>$number</small></h1></div><br>";
 
@@ -245,7 +251,7 @@
 			?>
 	</div>
 	<div class='col-xs-12'>
-		Question Queue by <a href='http://www.tech.mtu.edu/~mitcheld'>Mitch Davis</a> and <a href='https://github.com/JohnRThomas/'>John Thomas</a>
+		Question Queue by <a href='http://www.tech.mtu.edu/~mitcheld'>Mitch Davis</a>, <a href='https://github.com/JohnRThomas/'>John Thomas</a> and <a href='https://www.youtube.com/watch?v=5LitDGyxFh4'>John Cena</a> 
 	</div>
 </div>
 

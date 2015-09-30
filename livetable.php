@@ -14,7 +14,7 @@
     if ($next == null) { $next = "No Questions!"; }
     
     if ($admin) {
-        echo "<div class='bg-success text-success text-center'><h1>Next: <span class='badge'><h1>&nbsp;&nbsp;$next&nbsp;&nbsp;</h1></span></h1></div>";
+        echo "<div style='border-radius: 5px' class='bg-success text-success text-center'><h1>Next: <span class='badge'><h1>&nbsp;&nbsp;$next&nbsp;&nbsp;</h1></span></h1></div>";
     }
 
 	echo "
@@ -37,10 +37,11 @@
 	$id = 0;
 	$time = time();
 	$firstIP = "";
+	$sound = false;
 	while($row = $result->fetch_assoc()){
 		$id++;
 		if ($id == 1) { $firstIP = $row['ip']; }
-
+		$seen = intval($row['seen']);
 		$timeDifference = time() - $row['utc'];
 		$minutes = floor($timeDifference / 60);
 		$seconds = $timeDifference % 60;
@@ -112,19 +113,6 @@
             $question = "<kbd><b>" . $dest . "</b><kbd>";
             $row['class'] = "EasterEgg";
         }
-
-        //@Mitch
-        if (!(strpos($question,"<kbd>@mitch</kbd>",0) === false) || !(strpos($question,"<kbd>@Mitch</kbd>",0) === false)) {
-            $rand = "@";
-            for ($i = 0; $i < 5; $i++) {
-                $num = rand ( 0, 25 ) + 65;
-                $rand .= chr ( $num );
-            }            
-
-            $question = str_replace("@mitch",$rand,$question);
-            $question = str_replace("@Mitch",$rand,$question);
-            $row['class'] = "EasterEgg";
-        }
 		
 		//Code
         if (!(strpos($question,"@code",0) === false)) {
@@ -138,7 +126,7 @@
 				$question = "<b><u>Note: This code is censored from other students</u></b><br>" . $question;
 			}
         }
-		
+				
 		//Public Code
         if (!(strpos($question,"@publiccode",0) === false)) {
 			$question = str_replace("<kbd>@publiccode</kbd>","",$question);
@@ -151,7 +139,21 @@
         if (!(strpos($question,"\\",0) === false)) {
 			$question = str_replace("\\","",$question);
         }
-
+		
+		
+		if(!$seen && $admin && !$sound){
+			$conn->query("UPDATE questions SET seen=1;");
+        	$sound = true;
+        	$dw = intval(date("w"));
+        	$hr = intval((date("G") + 6) % 7);
+        	if(($dw == 1 && $hr > 18) || ($dw == 2 || $dw == 4)){
+        		echo "<audio autoplay><source src='new_question.wav'></audio>";
+        	}else{
+        		echo "<audio autoplay><source src='lilbits.wav'></audio>";
+        		//echo "<audio autoplay><source src='jazz.wav'></audio>";
+        	}
+		}
+		
 	    echo "
 	    <tr class='$class'>
 	    	<td>$answer $row[uid]</td>
