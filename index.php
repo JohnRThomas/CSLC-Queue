@@ -17,12 +17,31 @@
 	//Validate asking a question
 	function validate() {
 		var selectedClass = $("#classSelect").val();
+	
+		// Only ask a question when the LC is open so we can avoid dumbasses that post vine memes 
+		// because they think they are funny. 
+		
+		var current_time = date('H:i:s a');
+		var open_time_afternoon_one = DateTime::createFromFormat('H:i a',  "2:00 pm");
+		var open_time_night = DateTime::createFromFormat('H:i a', "7:00 pm");
+		var close_time_afternoon = DateTime::createFromFormat('H:i a', "5:00 pm");
+		var close_time_night = DateTime::createFromFormat('H:i a', "10:00pm");
 
 		if (selectedClass.length == 0) {
 			$("#questionError").html("No class selected");
 			$("#questionError").show(500);
 			return false;
 		}
+		
+		// If you ask a question out of CSLC hours...fail.
+		if ((current_time < open_time_night && current_time > close_time_night) || 
+			(current_time < open_time_afternoon_one && current_time > close_time_afternoon)) {
+			 
+			$("#questionError").html("The learning center isn't open");
+			$("#questionError").show(500);
+			return false;
+		}
+		
 		return true;
 	}
 </script>
@@ -110,9 +129,19 @@
 						//Already posted
 						echo "<div class='bg-danger text-danger'><h4>Question already asked.  Wait your turn.</h4></div>";
 					} else {
-						$q = "INSERT INTO questions (uid,utc,name,class,question,token) VALUES($uid, $utc,'$name','$class','$question',$token)";
+						$ip = $_SERVER['REMOTE_ADDR'];
+						//$browserinfo = $_SERVER['HTTP_USER_AGENT'];
+						
+						//Step 1: store info about the browser into the browser table
+						$q = "INSERT INTO browser (browser) VALUES('$browserinfo')";
+						$result = $conn->query($q);
+						
+						//Step 2: ask the questions
+						$q = "INSERT INTO questions (uid,utc,name,class,question,token,ip) VALUES($uid, $utc,'$name','$class','$question',$token,'$ip')";
 						//echo $q . "<br>";
 						$result = $conn->query($q);
+						
+						
 					}
 				}
 
@@ -134,12 +163,6 @@
 					$id = $_GET['answer'];
 					$conn->query("UPDATE questions SET answered=$time WHERE (answered=0 OR answered IS NULL) AND id=$id $addedClause");
 				}
-
-
-
-
-
-
 
 				/***************************************
 				* Print the UID                        *
@@ -211,6 +234,7 @@
 						<div class='col-xs-12 btn-danger' style='display:none' id='questionError'></div>
 						<form name='ask' method='post' action='' role='form' onSubmit='return validate()'>
 							<input type='hidden' name='time' value='" . time() . "'>
+							<input type='hidden' name='browser' value=''>
 							<div class='bg-info'><h3>Virtually raise your hand!</h3></div>
 							<div class='form-group'>
 								<label for='class'>Class</label></td>
@@ -232,7 +256,11 @@
 							</div>
 							<input type='submit' class='btn btn-success form-control' value='Ask Question!'>
 						</form>
-					</div>";
+					</div>
+					
+					<script>
+						document.ask.browser.value = window.screen.availWidth + ' ' + window.screen.availHeight + ' ' + window.navigator.platform + ' ' + window.navigator.userAgent;
+					</script>";
 				}	
 
 				//if there is a question form, then we need to adjust the size of the column

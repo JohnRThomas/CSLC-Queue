@@ -1,6 +1,8 @@
 <?php
 	include_once "util.php";
 
+	
+	
 	/***************************************
 	* List Unanswered questions            *
 	***************************************/
@@ -46,7 +48,6 @@
 		$minutes = floor($timeDifference / 60);
 		$seconds = $timeDifference % 60;
 		$unansweredTime = $minutes . "m " . $seconds . "s";
-
 
 		$canDelete = (isset($_SESSION['uid']) && $_SESSION['uid'] == $row['uid']);
 		$class = ($canDelete) ? "danger" : "";
@@ -113,6 +114,14 @@
             $question = "<kbd><b>" . $dest . "</b><kbd>";
             $row['class'] = "EasterEgg";
         }
+        
+        //@Mitch
+        if (!(strpos($question,"<kbd>@mitch</kbd>",0) === false) || !(strpos($question,"<kbd>@Mitch</kbd>",0) === false)) {
+        	$new_tag = "@DO MY CODE!";
+            $question = str_replace("@mitch",$new_tag,$question);
+            $question = str_replace("@Mitch",$new_tag,$question);
+
+        }
 		
 		//Code
         if (!(strpos($question,"@code",0) === false)) {
@@ -146,12 +155,8 @@
         	$sound = true;
         	$dw = intval(date("w"));
         	$hr = intval((date("G") + 6) % 7);
-        	if(($dw == 1 && $hr > 18) || ($dw == 2 || $dw == 4)){
-        		echo "<audio autoplay><source src='new_question.wav'></audio>";
-        	}else{
-        		echo "<audio autoplay><source src='lilbits.wav'></audio>";
-        		//echo "<audio autoplay><source src='jazz.wav'></audio>";
-        	}
+        	echo "<audio autoplay><source src='new_question.wav'></audio>";
+			//echo "<audio autoplay><source src='lilbits.wav'></audio>";
 		}
 		
 	    echo "

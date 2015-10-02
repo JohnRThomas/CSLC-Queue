@@ -89,6 +89,14 @@
 				);";
 		echo "<div class='bg-info text-info'>Executing query: $query</div>";
 		$conn->query($query);
+		
+		//Create browserinfo table
+		$query = "CREATE TABLE $DBName.browser (
+					id INT(11) AUTO_INCREMENT PRIMARY KEY,
+					browser TEXT
+				);";
+		echo "<div class='bg-info text-info'>Executing query: $query</div>";
+		$conn->query($query);
 
 		echo "<div class='bg-success text-success'>Database initialization complete.  Be sure to set INITIALIZE_DB to FALSE in util.php</div>";
 	}
