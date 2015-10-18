@@ -130,7 +130,7 @@
 						echo "<div class='bg-danger text-danger'><h4>Question already asked.  Wait your turn.</h4></div>";
 					} else {
 						$ip = $_SERVER['REMOTE_ADDR'];
-						//$browserinfo = $_SERVER['HTTP_USER_AGENT'];
+						$browserinfo = $_SERVER['HTTP_USER_AGENT'];
 						
 						//Step 1: store info about the browser into the browser table
 						$q = "INSERT INTO browser (browser) VALUES('$browserinfo')";
@@ -297,7 +297,7 @@
 
 		echo "
 		<script>
-			setInterval(function() { $('#livetable').load('livetable.php'); }, 1000 );
+			setInterval(function() { $('#livetable').load('livetable.php'); }, 5000 );
 			$updatePics
 		</script>
 		";

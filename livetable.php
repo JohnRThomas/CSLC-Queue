@@ -53,7 +53,7 @@
 		$class = ($canDelete) ? "danger" : "";
 		
 		//Admins and question owners can answer questions
-		$answer = ($admin || $canDelete) ? "<a class='btn btn-danger btn-xs' href='?answer=$row[id]'><span class='glyphicon glyphicon-trash'></span></a>" : "";
+		$answer = ($admin || $canDelete) ? "<a class='btn btn-danger btn-xs' onclick= 'function() { $('#livetable').load('livetable.php'); }' href='?answer=$row[id]'><span class='glyphicon glyphicon-trash'></span></a>" : "";
 
         $question = $row['question'];
         //Find antrhing like @Mitch and format it
@@ -155,7 +155,14 @@
         	$sound = true;
         	$dw = intval(date("w"));
         	$hr = intval((date("G") + 6) % 7);
-        	echo "<audio autoplay><source src='new_question.wav'></audio>";
+        	
+        	//This is a setting! (plays 0.wav - 14.wav)
+        	$NUMSOUNDS = 15;
+        	
+        	$soundID = $row['uid'] % $NUMSOUNDS;
+        	echo "<audio autoplay><source src='audio/" . $soundID . ".wav'></audio>";
+			//echo "<audio autoplay><source src='new_question.wav'></audio>";
+			
 			//echo "<audio autoplay><source src='lilbits.wav'></audio>";
 		}
 		
