@@ -1,7 +1,18 @@
 <!DOCTYPE html>
+<!--
+
+A Here's a small list of easter eggs!
+Add the following to your question to play a sound!
+	@hey, @haha, @starshipenterprise, @rickroll,
+	@hestrying, @gong, @moo, @maa, @fanfare,
+	@mariojump, @yum, @kimpossible
+	
+	There's more!  You have to be a good programmer to find them!
+-->
+
 <html lang="en">
 <head>
-  <title>CSLC Question Queue</title>
+  <title>CSLC Question Queue. Sponsored by Epic Systems!</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -18,26 +29,15 @@
 	function validate() {
 		var selectedClass = $("#classSelect").val();
 	
-		// Only ask a question when the LC is open so we can avoid dumbasses that post vine memes 
-		// because they think they are funny. 
-		
-		var current_time = date('H:i:s a');
-		var open_time_afternoon_one = DateTime::createFromFormat('H:i a',  "2:00 pm");
-		var open_time_night = DateTime::createFromFormat('H:i a', "7:00 pm");
-		var close_time_afternoon = DateTime::createFromFormat('H:i a', "5:00 pm");
-		var close_time_night = DateTime::createFromFormat('H:i a', "10:00pm");
-
+		// Only ask a question when the LC is open
 		if (selectedClass.length == 0) {
 			$("#questionError").html("No class selected");
 			$("#questionError").show(500);
 			return false;
 		}
-		
-		// If you ask a question out of CSLC hours...fail.
-		if ((current_time < open_time_night && current_time > close_time_night) || 
-			(current_time < open_time_afternoon_one && current_time > close_time_afternoon)) {
-			 
-			$("#questionError").html("The learning center isn't open");
+
+		if ($("#question-text").val() == '') {
+			$("#questionError").html("Please type in a question!");
 			$("#questionError").show(500);
 			return false;
 		}
@@ -57,7 +57,7 @@
 				<script>
 					function popUp(){
 						<?php echo "var question = ' ". post('question') . "'.trim().replace(' ','+');";?>
-						$('#pop').html("<div style='font-weight: bold'>While you wait, check out these seraches for your question:</div><div>If your Google/Stack Overflow search is not up when we come to answer your question, we will wait for you to search for it and read it in front of us.</div><br>&nbsp;<a style='color:#696DF7' target='_blank' href='http://google.com/search?q="+ question + "'>Google</a><br>&nbsp;<a style='color:#696DF7' target='_blank' href='http://stackoverflow.com/search?q="+ question + "'>Stack Overflow</a>");
+						$('#pop').html("Thanks!  Wait for us to call your number!");
 						$('#pop').dialog({
 							autoOpen: false,
 							width: 'auto',
@@ -130,13 +130,16 @@
 						echo "<div class='bg-danger text-danger'><h4>Question already asked.  Wait your turn.</h4></div>";
 					} else {
 						$ip = $_SERVER['REMOTE_ADDR'];
+						if ($ip == "141.219.158.123") { exit(); }
 						$browserinfo = $_SERVER['HTTP_USER_AGENT'];
+						
+						//if ($browserinfo == "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36") { exit(); }
 						
 						//Step 1: store info about the browser into the browser table
 						$q = "INSERT INTO browser (browser) VALUES('$browserinfo')";
 						$result = $conn->query($q);
 						
-						//Step 2: ask the questions
+						//Step 2: ask the Nquestions
 						$q = "INSERT INTO questions (uid,utc,name,class,question,token,ip) VALUES($uid, $utc,'$name','$class','$question',$token,'$ip')";
 						//echo $q . "<br>";
 						$result = $conn->query($q);
@@ -169,7 +172,7 @@
 				***************************************/
 				$number = "You haven't asked anything";
 				if (isset($_SESSION['uid'])) {
-					$number = "You are number " . getNameAndNumber($_SESSION['uid']);
+					$number = "You are number " . ((intval(getNameAndNumber($_SESSION['uid'])) % 100) + 1);//(intval() % 100) + 1;
 
 					//Did they vote?
 					//$result = $conn->query("SELECT COUNT(*) FROM votes WHERE uid=0");
@@ -230,8 +233,7 @@
 				if (!$admin) {					
 
 					echo "
-					<div class='col-xs-12 col-sm-4'>
-						<div class='col-xs-12 btn-danger' style='display:none' id='questionError'></div>
+					<div class='col-xs-12 col-sm-4'>						
 						<form name='ask' method='post' action='' role='form' onSubmit='return validate()'>
 							<input type='hidden' name='time' value='" . time() . "'>
 							<input type='hidden' name='browser' value=''>
@@ -253,7 +255,9 @@
 							<div class='form-group'>
 								<label for='question'>Question</label>
 								<textarea id='question-text' class='form-control' name='question' placeholder='Please write a detailed question.'></textarea>
+								Looking for some fun?  Try adding @haha or @hey to your question! See more fun things by reading the source code of this page!
 							</div>
+							<div class='col-xs-12 btn-danger' style='display:none' id='questionError'></div>
 							<input type='submit' class='btn btn-success form-control' value='Ask Question!'>
 						</form>
 					</div>
@@ -276,10 +280,29 @@
 					include "livetable.php";
 				echo "</div>";
 				
+				echo "<div id='livetabletest'></div>";
+				
 			?>
 	</div>
 	<div class='col-xs-12'>
-		Question Queue by <a href='http://www.tech.mtu.edu/~mitcheld'>Mitch Davis</a>, <a href='https://github.com/JohnRThomas/'>John Thomas</a> and <a href='https://www.youtube.com/watch?v=5LitDGyxFh4'>John Cena</a> 
+		Question Queue by <a href='http://imgur.com/jdWBDAW'>Mitch Davis</a> and <a href='https://github.com/JohnRThomas/'>John Thomas</a> 
+	</div>
+	<div class='col-xs-12'>
+		<a href="statistics.php">Statistics</a>
+	</div>
+	<div class='col-xs-12'>
+		<a href="http://cslc.mtu.edu/input4.txt">CS1122 Prog 4 test input</a>
+	</div>
+	<div class='col-xs-12'>
+		<a href="MazeRunner.jar">Maze Runner (Dijkstra's Visualizer)</a>
+		<a href='#' onClick="$('#mazediv').show(1000)">(How to run Maze Runner)</a>
+		<div style='display: none' id="mazediv">
+			If you are on windows, download MazeRunner.jar and double click it to run it<br>
+			Linux is weird.  You can't double click to run, so you have to open a terminal and type:<br>
+			java -jar MazeRunner.jar<br>
+			<br>
+			Please note that you must CD into the same directory as the jar before you can run it
+		</div>
 	</div>
 </div>
 
@@ -297,7 +320,21 @@
 
 		echo "
 		<script>
-			setInterval(function() { $('#livetable').load('livetable.php'); }, 5000 );
+			var mostRecent = 0;	//The most recent ID we have loaded
+			function reload() {
+			
+				if (disableRefresh) { return; }
+				//First load the page that tells us the last ID
+				//$('#livetabletest').load('livetable.php?lastupdateonly=1');
+				$('#livetable').load('livetable.php');
+				//If this ID is more recent than ours, we will update!
+				//if ($('#livetabletest').val() - mostRecent > 0) {
+				//	$('#livetable').load('livetable.php');
+				//	mostRecent = $('#livetabletest').val() - 0;
+				//}
+			}
+		
+			setInterval(function() { reload(); }, 1000 );
 			$updatePics
 		</script>
 		";
