@@ -12,7 +12,7 @@ Add the following to your question to play a sound!
 
 <html lang="en">
 <head>
-  <title>CSLC Question Queue. Sponsored by Epic Systems!</title>
+  <title>CSLC Question Queue</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -246,7 +246,7 @@ Add the following to your question to play a sound!
 									<option value='Intro I'>CS1121 - Intro To Prog. I</option>
 									<option value='Intro II'>CS1122 - Intro To Prog. II</option>
 									<option value='Accel Intro'>CS1131 - Accelerated Intro to Prog.</option>
-									<option value='C'>CS1141 - C For Java Programmers</option>
+									<option value='C'>CS1142 - Programming at the Hardware Software Interface</option>
 									<option value='Discrete'>CS2311 - Discrete Structures</option>
 									<option value='Data Structures'>CS2321 - Data Structures</option>
 									<option value='OTHER'>Other</option>
